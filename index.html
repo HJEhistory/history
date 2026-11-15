@@ -142,7 +142,7 @@ const wr=a=>Math.atan2(Math.sin(a),Math.cos(a));
 function give(c){if(c.item)return;{const r=(c.pos-1)/Math.max(1,cars.length-1),x=Math.random();c.item=r>.6&&x<.2?'zap':r>.4&&x<.3?'mega':x<.28?'boost':x<.5?'banana':x<.78?'rocket':x<.9?'shield':'boost'}c.wait=1+Math.random()*3}
 function step(dt){
 const ord=[...cars].sort((a,b)=>(b.fin?1e9-b.ft:b.tot)-(a.fin?1e9-a.ft:a.tot));ord.forEach((c,i)=>c.pos=i+1);
-for(const c of cars){if(c.remote)continue;let s=0,th=0,br=0,dk=0,use=0;
+for(const c of cars){if(c.remote)continue;if(qz&&c===me){c.v=0;c.dr=0;c.ch=0;c.boost=0;c.spin=0;c.sa=0;pu=false;continue}let s=0,th=0,br=0,dk=0,use=0;
 if(!c.ai){s=((K.ArrowLeft||K.KeyA||K.bl)?1:0)-((K.ArrowRight||K.KeyD||K.br)?1:0);th=TOUCH||K.ArrowUp||K.KeyW;br=K.ArrowDown||K.KeyS;dk=K.Space||K.ShiftLeft||K.bd;use=pu;pu=false}
 else{const j=(c.idx+9)%N,tx=S[j].x+L[j].x*c.off,tz=S[j].z+L[j].z*c.off,d=wr(Math.atan2(tx-c.x,tz-c.z)-c.h);s=Math.max(-1,Math.min(1,d*2.5));th=1;c.wait-=dt;if(c.item&&c.wait<=0&&!c.fin)use=1}
 if(c.sh>0)c.sh-=dt;if(c.spin>0){c.spin-=dt;c.sa+=dt*14;s=0;th=0;dk=0;c.v*=1-1.5*dt}else c.sa=0;
