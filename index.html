@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>은산 역사 레이스</title>
+<title>은산 역사 레이서</title>
 <style>
 :root{--bg:#0d1b2a;--panel:#102235ee;--fg:#f6f8fb;--acc:#ffb703;--hot:#fb5607;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1b2a;--panel:#102235ee;--fg:#f6f8fb}}
@@ -17,9 +17,9 @@ html,body{height:100%;margin:0;background:var(--bg);color:var(--fg);font-family:
 #cr{left:0;right:0;top:calc(env(safe-area-inset-top,0px) + 132px);text-align:center;font-size:15px;color:#e6c8ff}
 #msg{left:0;right:0;top:32%;text-align:center;font-size:80px;color:var(--acc)}
 #mm{position:fixed;right:10px;top:calc(env(safe-area-inset-top,0px) + 8px);width:120px;height:120px;background:#0007;border-radius:12px;pointer-events:none}
-.tb{position:fixed;bottom:calc(env(safe-area-inset-bottom,0px) + 14px);width:84px;height:84px;border-radius:50%;border:3px solid #fff8;background:#0a1624aa;color:#fff;font-size:15px;font-weight:800;display:none}
+.tb{position:fixed;bottom:calc(env(safe-area-inset-bottom,0px) + 14px);width:min(84px,22vw);height:min(84px,22vw);border-radius:50%;border:3px solid #fff8;background:#0a1624aa;color:#fff;font-size:15px;font-weight:800;display:none}
 .tb.t{display:block}
-#bl{left:12px}#br{left:106px}#bd{right:106px;background:#fb560988}#bi{right:12px;background:#ffb70388}
+#bl{left:12px}#br{right:12px}#bd{left:calc(50% - min(84px,22vw) - 4px);background:#fb560988}#bi{left:calc(50% + 4px);background:#ffb70388}
 .p{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#0d1b2acc}
 .p>div{background:var(--panel);border:2px solid #fff3;border-radius:18px;padding:22px;width:min(92vw,400px);max-height:92vh;overflow:auto;text-align:center}
 h1{margin:0 0 4px;font-size:30px;color:var(--acc)}
@@ -46,8 +46,8 @@ input{width:100%;box-sizing:border-box;padding:10px;border-radius:10px;border:2p
 <button class="tb" id="bl" data-k="bl">◀</button><button class="tb" id="br" data-k="br">▶</button>
 <button class="tb" id="bd" data-k="bd">드리프트</button><button class="tb" id="bi" data-k="use">아이템</button>
 <div class="p" id="menu"><div>
-<h1>은산 역사 레이스</h1>
-<p>3바퀴 · 최대 24명 실시간 레이스<br>2바퀴는 랜덤 퀴즈, <br>3바퀴부터는 상자가 길을 꽉 막아 피할 수 없어요!<br>갈림길: 🟣 짧은 길(퀴즈 상자 많음·언덕) / 🟢 긴 길</p>
+<h1>은산 역사 레이서</h1>
+<p>3바퀴 · 최대 24명 실시간 레이스<br>2바퀴는 랜덤 퀴즈(지름길 상자는 2바퀴부터), 3바퀴부터는 트랙 밖으로 못 나가고 상자가 길을 꽉 막아요!<br>갈림길: 🟣 짧은 길(퀴즈 상자 많음·언덕) / 🟢 긴 길</p>
 <input id="nm" maxlength="8" value="나" aria-label="이름">
 <div class="k" id="kts"></div>
 <p id="kd"></p><div class="bp"><button class="ar" id="bdL" aria-label="이전 외형"><i></i></button><div id="bbox"><canvas id="bcv"></canvas></div><button class="ar r" id="bdR" aria-label="다음 외형"><i></i></button></div><div id="bdd"></div><div class="k" id="cls"></div><p id="jm"></p>
@@ -55,23 +55,11 @@ input{width:100%;box-sizing:border-box;padding:10px;border-radius:10px;border:2p
 <p>키보드: 방향키/WASD 이동, Space 드리프트, E 아이템<br>모바일: 자동 가속, 화면 버튼으로 조작</p>
 </div></div>
 <div class="h" id="wn" style="left:0;right:0;top:22%;text-align:center;font-size:30px;color:#ff4d4d;display:none">⚠️ 역주행 금지! 방향을 바꿔 주세요</div>
-
-<div id="sb" style="display:none;position:fixed;left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 14px);justify-content:space-between;padding:0 12px;align-items:center;gap:8px;z-index:5">
-
-<button class="go" id="sbp" style="width:auto;padding:10px 16px;margin:0;background:#456">◀</button>
-
-<div style="display:flex;align-items:center;gap:8px">
-<b id="sbn" style="background:#000a;padding:11px 16px;border-radius:12px"></b>
-<button class="go" id="sbu" style="width:auto;padding:10px 16px;margin:0">전체 보기</button>
-</div>
-
-<button class="go" id="sbx" style="width:auto;padding:10px 16px;margin:0;background:#456">▶</button>
-
-</div>
-
+<div id="sb" style="display:none;position:fixed;left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 14px);justify-content:center;align-items:center;gap:8px;z-index:5">
+<button class="go" id="sbp" style="width:auto;padding:10px 16px;margin:0;background:#456">◀</button><b id="sbn" style="background:#000a;padding:11px 16px;border-radius:12px"></b><button class="go" id="sbx" style="width:auto;padding:10px 16px;margin:0;background:#456">▶</button><button class="go" id="sbu" style="width:auto;padding:10px 16px;margin:0">전체 보기</button></div>
 <div id="qz" style="display:none;position:fixed;left:50%;top:38%;transform:translate(-50%,-50%);width:min(92vw,420px);z-index:4;background:var(--panel);border:2px solid var(--acc);border-radius:16px;padding:14px;text-align:center;box-sizing:border-box">
 <div style="height:6px;background:#0007;border-radius:4px;overflow:hidden;margin-bottom:8px"><div id="qt" style="height:100%;background:var(--acc);width:100%"></div></div>
-<div id="qq" style="font-weight:800;font-size:16px;line-height:1.4;margin-bottom:8px"></div><div id="qa" style="display:grid;grid-template-columns:1fr 1fr;gap:8px"></div></div>
+<div id="qq" style="font-weight:800;font-size:16px;line-height:1.4;margin-bottom:8px"></div><div id="qa" style="display:grid;grid-template-columns:1fr 1fr;gap:8px"></div><div id="qr" style="margin-top:8px;font-weight:800;font-size:15px"></div></div>
 <div class="p" id="wait" style="display:none"><div><h1>대기실</h1><p id="wl"></p></div></div>
 <div class="p" id="adm" style="display:none"><div style="width:min(96vw,900px);display:flex;flex-direction:column;gap:8px"><h1>관리자</h1><p id="as"></p>
 <div><button class="go" id="a1" style="width:auto;padding:10px 20px;margin:0 6px 0 0">레이스 시작</button><button class="go" id="a2" style="width:auto;padding:10px 20px;margin:0;background:#456">대기실로 초기화</button></div>
@@ -157,11 +145,12 @@ let sel=0;const kb=$('kts');
 KT.forEach((k,i)=>{const b=document.createElement('button');b.textContent=k.n;b.onclick=()=>{sel=i;rf()};kb.appendChild(b)});
 function rf(){[...kb.children].forEach((b,i)=>b.classList.toggle('s',i==sel));$('kd').textContent=KT[sel].d;if(window.PVOK)upPv()}rf();
 const bm=new THREE.MeshLambertMaterial({color:0xffc400,emissive:0x553300}),bm2=new THREE.MeshLambertMaterial({color:0xb04dff,emissive:0x40106a}),bg=new THREE.BoxGeometry(2,2,2),boxes=[];
-let wallOn=false;
-// one row = 11 boxes across the whole drivable width (-25..25); only the middle 3 show before lap 3
-const addRow=(Sa,La,Ha,Ta,k,mat)=>{const row=[],th=Math.atan2(Ta[k].x,Ta[k].z);for(let q=-5;q<=5;q++){const o=q*5,m=new THREE.Mesh(bg,mat);m.position.set(Sa[k].x+La[k].x*o,gy(Ha[k],Math.abs(o))+1.6,Sa[k].z+La[k].z*o);m.visible=Math.abs(q)<=1;scene.add(m);const b={m,t:0,ex:Math.abs(q)>1,row,th};row.push(b);boxes.push(b)}};
-for(let i=40;i<N;i+=50)addRow(S,L,HZ,T,i,bm);
-for(let j=8;j<=SM-8;j+=8)addRow(SS,SL,SH,ST,j,bm2);
+let wallOn=false,shOn=false,curLap=-9;
+const bv=b=>b.t<=0&&(!b.ex||wallOn)&&(!b.sh||shOn);
+// one row = 5 boxes (-10..10, 5 apart): 3 in the middle normally, all 5 form a solid wall across the road in lap 3
+const addRow=(Sa,La,Ha,Ta,k,mat,sh)=>{const row=[],th=Math.atan2(Ta[k].x,Ta[k].z);for(let q=-2;q<=2;q++){const o=q*5,m=new THREE.Mesh(bg,mat);m.position.set(Sa[k].x+La[k].x*o,gy(Ha[k],Math.abs(o))+1.6,Sa[k].z+La[k].z*o);m.visible=Math.abs(q)<=1&&!sh;scene.add(m);const b={m,t:0,ex:Math.abs(q)>1,sh,row,th};row.push(b);boxes.push(b)}};
+for(let i=40;i<N;i+=50)if(!((i>=FA-10&&i<=FA+25)||(i>=FZ-25&&i<=FZ+10)))addRow(S,L,HZ,T,i,bm,false);
+for(let j=24;j<=SM-24;j+=6)addRow(SS,SL,SH,ST,j,bm2,true);
 const bnm=new THREE.MeshLambertMaterial({color:0xffe14d});let cars=[],me,bans=[],fin=[],state='menu',cd=0,t0=0,ca=0;
 const FB={apiKey:"AIzaSyCkzXQvtm-pCnE4lhsAsiuhUt4mpewtUbY",authDomain:"h-history-h.firebaseapp.com",databaseURL:"https://h-history-h-default-rtdb.europe-west1.firebasedatabase.app",projectId:"h-history-h"};
 const ADMIN=location.hash=='#admin',PIN='1234',MAXP=24,COLS=[0xe53935,0x1e88e5,0x43a047,0xfdd835,0x8e24aa,0xfb8c00,0x00acc1,0xec407a];
@@ -196,7 +185,7 @@ function sync(){for(let i=cars.length-1;i>=0;i--)if(!pls[cars[i].id]){scene.remo
 for(const id in pls){const p=pls[id];let c=cars.find(q=>q.id==id);if(!c)c=mkCar(id,p);if(c.remote){c.tx=p.x;c.tz=p.z;c.th=p.h;c.v=p.v;c.tot=p.tot;c.fin=!!p.fin;c.ft=p.ft;c.dr=p.dr||0;c.qc=p.q||0;c.ch=p.ch||0;c.boost=p.b?1:0;c.sh=p.s?1:0;c.name=p.name}}}
 function mkBan(k,v){const m=new THREE.Mesh(new THREE.SphereGeometry(1,8,8),bnm);m.scale.y=.6;m.position.set(v.x,gAt(v.x,v.z,-1)+.6,v.z);scene.add(m);bans.push({m,x:v.x,z:v.z,own:null,age:2,k})}
 function onPhase(){dirty=1;if(ADMIN||!uid)return;
-if(room.phase=='lobby'){doneShown=0;state='wait';$('wait').style.display='flex';$('end').style.display='none';$('wn').style.display='none';qz=null;$('qz').style.display='none';$('msg').textContent='';bans.forEach(b=>scene.remove(b.m));bans=[];rks.forEach(r=>scene.remove(r.m));rks=[];boxes.forEach(b=>{b.t=0;b.m.visible=!b.ex});
+if(room.phase=='lobby'){doneShown=0;state='wait';$('wait').style.display='flex';$('end').style.display='none';$('wn').style.display='none';qz=null;$('qz').style.display='none';$('msg').textContent='';bans.forEach(b=>scene.remove(b.m));bans=[];rks.forEach(r=>scene.remove(r.m));rks=[];boxes.forEach(b=>{b.t=0;b.m.visible=bv(b)});
 if(me){slotPos(me,slotOf(uid));Object.assign(me,{rw:0,fin:false,ai:false,item:null,boost:0,spin:0,dr:0,ch:0,qc:0,y:0,sl:0,pt:0,bx:null});PL.child(uid).update({x:me.x,z:me.z,h:me.h,v:0,tot:me.tot,fin:0,ft:0,dr:0,q:0,ch:0,b:0})}}
 else if(room.phase=='count'){state='count';$('wait').style.display='none';if(me)slotPos(me,slotOf(uid))}}
 function drawAdmin(){const cv=$('am'),g=cv.getContext('2d'),sc=Math.min((cv.width-60)/(x1-x0),(cv.height-60)/(z1-z0)),q=(x,z)=>[30+(x-x0)*sc,cv.height-30-(z-z0)*sc];
@@ -232,28 +221,28 @@ if(dk&&!c.dr&&Math.abs(s)>.3&&c.v>20&&c.spin<=0){c.dr=s>0?1:-1;c.ch=0}
 if(c.dr){c.ch+=dt*(s*c.dr>0?1.4:1);if(!dk||c.v<14||c.spin>0){if(c.ch>2)c.boost=1.6;else if(c.ch>1)c.boost=.9;c.dr=0;c.ch=0}}
 if(use&&c.item){if(c.item=='boost')c.boost=Math.max(c.boost,1.8);else if(c.item=='shield')c.sh=6;else if(c.item=='mega'){c.boost=3.2;c.sh=3.2}else if(c.item=='rocket')fire(c);else if(c.item=='zap')FX.push({k:'zap',o:uid,at:c.tot,t:sNow()});else{const m=new THREE.Mesh(new THREE.SphereGeometry(1,8,8),bnm);m.scale.y=.6;const bx=c.x-Math.sin(c.a)*4,bz=c.z-Math.cos(c.a)*4;m.position.set(bx,gAt(bx,bz,c.idx)+.6,bz);scene.add(m);bans.push({m,x:bx,z:bz,own:c,age:0,k:BN.push({x:bx,z:bz,o:uid}).key})}c.item=null}
 const sp=Math.min(1,Math.abs(c.v)/15);
-c.h+=(c.dr?(c.dr*1+s*.8):s)*c.kt.t*sp*(c.v<0?-1:1)*dt;
+c.h+=(c.dr?(c.dr*.6+s*.5):s)*c.kt.t*sp*(c.v<0?-1:1)*dt;
 c.a+=wr(c.h-c.a)*Math.min(1,(c.dr?3.5:10)*dt);
 const rb=c.ai&&!c.fin?Math.max(.9,Math.min(1.08,1+(me.tot-c.tot)*.0012)):1,off=c.dist>W/2+1.5;
-const mxv=c.kt.v*(c.ai?c.sk*rb:1)*(c.boost>0?1.4:1)*(off?.5:1)*(c.rw>.3?.3:1)*(1-Math.max(-.12,Math.min(.22,(c.sl||0)*1.4)));if(c.boost>0)c.boost-=dt;
+const mxv=c.kt.v*(c.ai?c.sk*rb:1)*(c.boost>0?1.4:1)*(off?.5:1)*(c.rw>.3?.3:1)*(1-Math.max(-.12,Math.min(.22,(c.sl||0)*1.4)))*(c.dr?.85:1);if(c.boost>0)c.boost-=dt;
 if(th&&c.spin<=0){if(c.v<mxv)c.v=Math.min(mxv,c.v+c.kt.a*(c.boost>0?3:1)*dt)}
 else if(br)c.v=Math.max(-12,c.v-55*dt);else c.v=c.v>0?Math.max(0,c.v-12*dt):Math.min(0,c.v+12*dt);
 if(c.v>mxv)c.v=Math.max(mxv,c.v-35*dt);
 c.x+=Math.sin(c.a)*c.v*dt;c.z+=Math.cos(c.a)*c.v*dt;
 const nr=nearest(c.x,c.z,c.idx,c.a);let di=nr.mi-c.idx;if(di>N/2)di-=N;if(di<-N/2)di+=N;c.tot+=di;c.idx=nr.mi;c.dist=nr.lat;c.br=nr.br;
 {const fw=Math.sin(c.a)*nr.tx+Math.cos(c.a)*nr.tz,bw=Math.abs(c.v)>3&&fw*Math.sign(c.v)<-.25;c.rw=bw?c.rw+dt:Math.max(0,c.rw-2*dt);if(c.rw>.3)c.v*=1-3*dt;if(c.rw>1.5)c.h+=wr(Math.atan2(nr.tx,nr.tz)-c.h)*3*dt}
-const lim=W/2+14;if(c.dist>lim){const f=lim/c.dist;c.x=nr.px+(c.x-nr.px)*f;c.z=nr.pz+(c.z-nr.pz)*f;c.v*=1-2*dt}
+const w3=c.tot>=2*N,lim=w3?W/2-1:W/2+14;if(c.dist>lim){const f=w3?Math.max(lim/c.dist,1-6*dt):lim/c.dist;c.x=nr.px+(c.x-nr.px)*f;c.z=nr.pz+(c.z-nr.pz)*f;c.v*=1-2*dt}
 c.y=gy(nr.h,Math.min(nr.lat,lim));c.sl=nr.sl;
 const wl=c.tot>=2*N;
-for(const b of boxes){if(b.t>0||(b.ex&&!wl))continue;const dx=c.x-b.m.position.x,dz=c.z-b.m.position.z;
+for(const b of boxes){if(b.t>0||(b.ex&&!wl)||(b.sh&&c.tot<N))continue;const dx=c.x-b.m.position.x,dz=c.z-b.m.position.z;
 const hit=wl?Math.abs(dx*Math.cos(b.th)-dz*Math.sin(b.th))<=2.9&&Math.abs(dx*Math.sin(b.th)+dz*Math.cos(b.th))<=1.3+Math.abs(c.v)*dt:dx*dx+dz*dz<7;
 if(hit&&!qz){const lp=Math.floor(c.tot/N);if(c.bx!==b){c.bx=b;c.bq=lp==2||(lp==1&&Math.random()<.5)}
-const eat=()=>b.row.forEach(r=>{r.t=4;r.m.visible=false});
+const eat=()=>b.row.forEach(r=>{r.t=1e9;r.m.visible=false});
 if(c.bq){ask(c);eat();c.bx=null}else if(!c.item){give(c);eat();c.bx=null}}}
 if(c.bx&&(c.bx.m.position.x-c.x)**2+(c.bx.m.position.z-c.z)**2>=7)c.bx=null;
 for(let i=bans.length-1;i>=0;i--){const b=bans[i],dx=b.x-c.x,dz=b.z-c.z;if(dx*dx+dz*dz<5&&(b.own!==c||b.age>1)){if(c.sh>0)c.sh=0;else{c.spin=1.1;c.v*=.3;c.dr=0}scene.remove(b.m);bans.splice(i,1);if(b.k)BN.child(b.k).remove()}}
 if(!c.fin&&c.tot>=3*N){c.fin=true;c.ai=true;c.ft=performance.now()-t0;fin.push(c);if(c===me)end()}}
-bans.forEach(b=>b.age+=dt);boxes.forEach(b=>{if(b.t>0){b.t-=dt;if(b.t<=0)b.m.visible=!b.ex||wallOn}});
+bans.forEach(b=>b.age+=dt);boxes.forEach(b=>{if(b.t>0){b.t-=dt;if(b.t<=0)b.m.visible=bv(b)}});
 for(const b of cars){if(!me||b===me)continue;const a=me,dx=b.x-a.x,dz=b.z-a.z,d=Math.hypot(dx,dz);if(d<3.4&&d>.01){const p=(3.4-d)/d*.65;a.x-=dx*p;a.z-=dz*p;a.v*=Math.abs(a.v-b.v)>14?.8:.97}}}
 function end(){setTimeout(()=>{$('end').style.display='flex';rend()},900)}
 $('st').onclick=()=>{if(!PL)return;if(room.phase!='lobby'){$('jm').textContent='레이스가 진행 중이에요. 다음 판을 기다려 주세요.';return}
@@ -295,67 +284,45 @@ cam.position.x+=(tx-cam.position.x)*f;cam.position.z+=(tz-cam.position.z)*f;cam.
 cam.lookAt(t.x+Math.sin(t.h)*6,t.y+1.5,t.z+Math.cos(t.h)*6);cam.fov+=((70+(t.boost>0?14:t.v*.2))-cam.fov)*f;cam.updateProjectionMatrix();
 const o=[...cars].sort((a,b)=>(b.fin?1e9-b.ft:b.tot)-(a.fin?1e9-a.ft:a.tot));
 $('sbn').textContent=t.name;$('rank').textContent=(o.indexOf(t)+1)+'위';$('lap').textContent='LAP '+Math.min(3,Math.max(1,Math.floor(t.tot/N)+1))+'/3';$('spd').textContent=Math.round(Math.abs(t.v)*3.2)+' km/h'}
-const QB=[['제1차 세계 대전의 직접적인 계기가 된 사건은?', '사라예보 사건', '피의 일요일 사건', '마른 전투', '베르사유 조약'],
-  ['독일이 프랑스와 대립하면서 맺은 동맹은?', '3국 동맹', '3국 협상', '바르샤바 조약', '북대서양 조약'],
-  ['3국 동맹에 속한 국가로 옳은 것은?', '이탈리아', '영국', '프랑스', '러시아'],
-  ['3국 협상을 맺은 국가들의 조합은?', '영국, 프랑스, 러시아', '독일, 이탈리아, 일본', '독일, 오스트리아·헝가리 제국, 이탈리아', '영국, 독일, 러시아'],
-  ['사라예보 사건으로 암살당한 인물은?', '오스트리아·헝가리 제국의 황태자', '독일 황제', '러시아 황제', '세르비아 국왕'],
-  ['제1차 세계 대전이 발발한 연도는?', '1914년', '1918년', '1919년', '1939년'],
-  ['제1차 세계 대전 당시 서부 전선에서 전개된 전투 방식은?', '참호전', '기병전', '해상 봉쇄전', '게릴라전'],
-  ['제1차 세계 대전 중 독일이 펼친 작전은?', '무제한 잠수함 작전', '노르망디 상륙 작전', '미드웨이 해전', '진주만 기습 작전'],
-  ['독일의 무제한 잠수함 작전으로 침몰한 영국 여객선은?', '루시타니아호', '타이타닉호', '메이플라워호', '산타마리아호'],
-  ['제1차 세계 대전에서 연합국 편으로 참전한 국가는?', '미국', '독일', '오스만 제국', '불가리아'],
-  ['제1차 세계 대전 중 프랑스군과 독일군이 303일간 전투를 벌인 곳은?', '베르됭', '마른', '사라예보', '파리'],
-  ['제1차 세계 대전 당시 독일군의 진격을 막아 낸 전투는?', '마른 전투', '미드웨이 해전', '스탈린그라드 전투', '베르됭 전투'],
-  ['제1차 세계 대전에서 여러 나라가 인적·물적 자원을 총동원하여 벌인 전쟁은?', '총력전', '냉전', '국지전', '종교 전쟁'],
-  ['제1차 세계 대전 당시 전쟁 물품을 생산하는 등 전쟁에 참여한 사람들은?', '여성 노동자', '왕족만', '귀족만', '외교관만'],
-  ['제1차 세계 대전 중 새롭게 등장한 무기로 옳지 않은 것은?', '컴퓨터', '탱크', '전투기', '잠수함'],
-  ['제1차 세계 대전이 끝난 후 전후 문제를 처리하기 위해 열린 회의는?', '파리 강화 회의', '빈 회의', '베를린 회의', '얄타 회담'],
-  ['파리 강화 회의를 제안한 미국 대통령은?', '윌슨', '루스벨트', '링컨', '워싱턴'],
-  ['제1차 세계 대전 이후 독일과 연합국이 맺은 조약은?', '베르사유 조약', '포츠담 선언', '독소 불가침 조약', '파리 조약'],
-  ['베르사유 조약에 따라 독일이 해야 했던 일은?', '군비 축소와 배상금 지불', '식민지 확대', '군사력 증강', '국제 연맹 주도'],
-  ['제1차 세계 대전 이후 새롭게 형성된 국제 질서를 무엇이라고 하는가?', '베르사유 체제', '빈 체제', '냉전 체제', '베를린 체제'],
-  ['국제 평화 유지를 목적으로 1920년에 창설된 기구는?', '국제 연맹', '국제 연합', '코민테른', '유럽 연합'],
-  ['국제 연맹이 국제 문제 해결에 큰 영향력을 발휘하지 못한 이유는?', '군사적 수단이 없고 미국 등 강대국이 참여하지 않았기 때문에', '회원국이 모두 아시아 국가였기 때문에', '전쟁을 직접 일으켰기 때문에', '경제 활동만 담당했기 때문에'],
-  ['러시아에서 차르의 통치에 반대하는 시위대에 정부군이 발포한 사건은?', '피의 일요일 사건', '사라예보 사건', '보스턴 차 사건', '광주 학생 항일 운동'],
-  ['피의 일요일 사건이 일어난 연도는?', '1905년', '1914년', '1917년', '1922년'],
-  ['1917년 3월 러시아에서 노동자와 군인들이 결성한 조직은?', '소비에트', '국제 연맹', '코민테른', '나치스'],
-  ['러시아의 3월 혁명으로 무너진 통치 체제는?', '차르 전제 정치', '공산당 독재 체제', '입헌 군주제', '군국주의 체제'],
-  ['러시아의 11월 혁명을 이끈 인물은?', '레닌', '스탈린', '히틀러', '무솔리니'],
-  ['레닌이 이끄는 볼셰비키가 임시 정부를 무너뜨리고 세운 정부는?', '소비에트 정부', '바이마르 정부', '파시스트 정부', '임시 정부'],
-  ['레닌이 경제적 어려움을 극복하기 위해 자본주의 요소를 일부 도입한 정책은?', '신경제 정책(NEP)', '뉴딜 정책', '5개년 계획', '보호 무역 정책'],
-  ['1922년에 수립된 사회주의 국가의 이름은?', '소련', '독일', '이탈리아', '일본'],
-  ['레닌의 뒤를 이어 농업 집단화와 중공업 중심의 5개년 계획을 추진한 인물은?', '스탈린', '윌슨', '루스벨트', '처칠'],
-  ['국제 공산당 연합 조직인 코민테른을 만든 인물은?', '레닌', '히틀러', '무솔리니', '니콜라이 2세'],
-  ['제1차 세계 대전 이후 독일에서 수립된 공화국은?', '바이마르 공화국', '소비에트 공화국', '로마 공화국', '프랑스 제국'],
-  ['바이마르 헌법이 보장한 권리로 옳은 것은?', '노동자의 권리와 여성의 참정권', '왕의 절대 권력', '식민지 지배권', '군부의 독재 권한'],
-  ['제1차 세계 대전 이후 여성의 참정권 요구가 확대된 배경은?', '여성의 사회적·경제적 역할이 커졌기 때문에', '여성의 경제 활동이 금지되었기 때문에', '국제 연맹이 모든 여성에게 투표를 금지했기 때문에', '전쟁 이후 왕권이 강화되었기 때문에'],
-  ['1929년 대공황이 시작된 장소는?', '뉴욕 증권 거래소', '런던 증권 거래소', '파리 증권 거래소', '도쿄 증권 거래소'],
-  ['대공황이 발생한 주요 원인으로 옳은 것은?', '생산량이 소비량을 초과하여 재고가 쌓였기 때문에', '세계 인구가 급격히 감소했기 때문에', '모든 국가가 무역을 중단했기 때문에', '농업 생산이 완전히 중단되었기 때문에'],
-  ['미국의 루스벨트 대통령이 대공황을 극복하기 위해 실시한 정책은?', '뉴딜 정책', '신경제 정책', '보호 무역 정책', '5개년 계획'],
-  ['뉴딜 정책의 주요 내용으로 옳은 것은?', '정부의 경제 개입과 대규모 공공사업', '모든 기업의 해외 이전', '군사력 증강만 추진', '식민지 확대'],
-  ['대공황 당시 영국과 프랑스가 실시한 경제 정책은?', '보호 무역 정책', '신경제 정책', '뉴딜 정책', '개방 무역 정책'],
-  ['이탈리아에서 파시스트당을 이끌고 정권을 장악한 인물은?', '무솔리니', '히틀러', '레닌', '스탈린'],
-  ['독일에서 나치스를 이끌고 정권을 장악한 인물은?', '히틀러', '무솔리니', '루스벨트', '윌슨'],
-  ['전체주의 국가의 공통적인 특징은?', '국가와 민족의 이익을 앞세워 개인의 희생을 강요하였다', '개인의 자유와 권리를 최우선으로 보장하였다', '군사력을 축소하고 평화를 추구하였다', '모든 식민지를 독립시켰다'],
-  ['일본에서 대공황 이후 권력을 잡은 세력이 내세운 사상은?', '군국주의', '자유주의', '민족 자결주의', '사회주의'],
-  ['독일, 이탈리아, 일본이 형성한 진영은?', '추축국', '연합국', '협상국', '중립국'],
-  ['독일이 제2차 세계 대전을 일으키는 계기가 된 사건은?', '폴란드 침공', '진주만 기습', '미드웨이 해전', '노르망디 상륙 작전'],
-  ['제2차 세계 대전이 발발한 연도는?', '1939년', '1914년', '1918년', '1945년'],
-  ['일본이 미국의 진주만 기지를 공격한 연도는?', '1941년', '1937년', '1942년', '1945년'],
-  ['1942년 미국이 일본군을 물리쳐 전세를 유리하게 바꾼 전투는?', '미드웨이 해전', '베르됭 전투', '마른 전투', '스탈린그라드 전투'],
-  ['제2차 세계 대전이 끝난 후 국제 협력과 평화 유지를 위해 창설된 기구는?', '국제 연합(UN)', '국제 연맹', '코민테른', '유럽 연합']];
+const QB=[
+['광개토태왕릉비를 세운 고구려의 왕은?','장수왕','소수림왕','문자왕','고국천왕'],
+['신라가 삼국 통일을 완성한 해는?','676년','668년','660년','698년'],
+['훈민정음을 만든 조선의 왕은?','세종','태종','세조','정조'],
+['한산도 대첩에서 승리한 장군은?','이순신','권율','김시민','곽재우'],
+['고려를 세운 인물은?','왕건','궁예','견훤','최영'],
+['조선을 세운 인물은?','이성계','정도전','왕건','이방원'],
+['팔만대장경판이 보관된 절은?','해인사','불국사','통도사','송광사'],
+['대한민국 임시정부가 처음 세워진 도시는?','상하이','충칭','베이징','도쿄'],
+['3·1 운동이 일어난 해는?','1919년','1910년','1945년','1950년'],
+['광복절은 몇 월 며칠일까?','8월 15일','3월 1일','10월 3일','6월 25일'],
+['6·25 전쟁이 일어난 해는?','1950년','1945년','1948년','1960년'],
+['고조선을 세웠다고 전해지는 인물은?','단군왕검','주몽','박혁거세','온조'],
+['고구려를 세운 인물은?','주몽','온조','박혁거세','대조영'],
+['발해를 세운 인물은?','대조영','왕건','연개소문','장보고'],
+['숙종 때 일본에 건너가 독도가 우리 땅임을 주장한 인물은?','안용복','이순신','김정호','장보고'],
+['동학농민운동을 이끈 인물은?','전봉준','김옥균','홍경래','최제우'],
+['수원 화성을 쌓을 때 쓴 거중기를 만든 학자는?','정약용','박지원','김정호','장영실'],
+['세종 때 측우기와 자격루를 만든 과학자는?','장영실','정약용','이천','허준'],
+['현존하는 세계에서 가장 오래된 금속활자본은?','직지심체요절','팔만대장경','훈민정음해례본','무구정광대다라니경'],
+['거란의 침입 때 담판으로 강동 6주를 얻은 인물은?','서희','강감찬','윤관','최영'],
+['귀주 대첩에서 거란군을 크게 물리친 장군은?','강감찬','서희','을지문덕','양만춘'],
+['4·19 혁명이 일어난 해는?','1960년','1950년','1972년','1987년'],
+['대동여지도를 만든 인물은?','김정호','정약용','박지원','이중환']];
 let qz=null,qi=[];
 function ask(c){if(!qi.length)qi=QB.map((_,i)=>i).sort(()=>Math.random()-.5);const q=QB[qi.pop()],ch=q.slice(1).sort(()=>Math.random()-.5);qz={a:ch.indexOf(q[1]),t:10};
-$('qq').textContent=q[0];$('qa').innerHTML='';ch.forEach((x,i)=>{const b=document.createElement('button');b.textContent=(i+1)+'. '+x;b.style.cssText='padding:11px 6px;border-radius:12px;border:2px solid #fff3;background:#0006;color:#fff;font-size:14px;font-weight:700';b.onclick=()=>ansQ(i);$('qa').appendChild(b)});$('qt').style.width='100%';$('qz').style.display='block'}
-function ansQ(i){if(!qz)return;const ok=i==qz.a;qz=null;$('qz').style.display='none';if(ok&&me){me.qc++;give(me)}$('msg').textContent=ok?'정답! ⭕':i<0?'시간 초과':'오답 ❌';setTimeout(()=>{if(state=='race')$('msg').textContent=''},900)}
+$('qq').textContent=q[0];$('qa').innerHTML='';ch.forEach((x,i)=>{const b=document.createElement('button');b.textContent=(i+1)+'. '+x;b.style.cssText='padding:11px 6px;border-radius:12px;border:2px solid #fff3;background:#0006;color:#fff;font-size:14px;font-weight:700';b.onclick=()=>ansQ(i);$('qa').appendChild(b)});$('qt').style.width='100%';$('qr').textContent='';$('qz').style.display='block'}
+function ansQ(i){if(!qz||qz.rev)return;const ok=i==qz.a,cur=qz,bs=[...$('qa').children];
+if(ok){qz=null;$('qz').style.display='none';if(me){me.qc++;give(me)}$('msg').textContent='정답! ⭕';setTimeout(()=>{if(state=='race')$('msg').textContent=''},900);return}
+cur.rev=1;$('qt').style.width='0%';bs.forEach((b,k)=>{b.disabled=true;if(k==cur.a)b.style.background='#1f9d55';else if(k==i)b.style.background='#c0392b'});
+$('qr').textContent=(i<0?'⏰ 시간 초과':'❌ 오답')+' · 정답: '+bs[cur.a].textContent.replace(/^\d+\.\s*/,'');
+setTimeout(()=>{if(qz===cur){qz=null;$('qz').style.display='none';$('qr').textContent=''}},1800)}
 // ---- loop
 let last=performance.now();
-function loop(now){requestAnimationFrame(loop);const dt=Math.min(.05,(now-last)/1000);last=now;if(tcar&&$('menu').style.display!='none'){tpiv.rotation.y+=dt*.8;tr.render(ts,tc)}if(me&&uid&&now-lw>120&&(state=='count'||state=='race')){lw=now;PL.child(uid).update({x:+me.x.toFixed(1),z:+me.z.toFixed(1),h:+me.h.toFixed(2),v:+me.v.toFixed(1),tot:me.tot,fin:me.fin?1:0,ft:me.ft||0,dr:me.dr,q:me.qc,ch:+me.ch.toFixed(1),b:me.boost>0?1:0,s:me.sh>0?1:0})}if(dirty){dirty=0;ui()}if(qz){qz.t-=dt;$('qt').style.width=Math.max(0,qz.t*10)+'%';if(qz.t<=0)ansQ(-1)}
+function loop(now){requestAnimationFrame(loop);const dt=Math.min(.05,(now-last)/1000);last=now;if(tcar&&$('menu').style.display!='none'){tpiv.rotation.y+=dt*.8;tr.render(ts,tc)}if(me&&uid&&now-lw>120&&(state=='count'||state=='race')){lw=now;PL.child(uid).update({x:+me.x.toFixed(1),z:+me.z.toFixed(1),h:+me.h.toFixed(2),v:+me.v.toFixed(1),tot:me.tot,fin:me.fin?1:0,ft:me.ft||0,dr:me.dr,q:me.qc,ch:+me.ch.toFixed(1),b:me.boost>0?1:0,s:me.sh>0?1:0})}if(dirty){dirty=0;ui()}if(qz&&!qz.rev){qz.t-=dt;$('qt').style.width=Math.max(0,qz.t*10)+'%';if(qz.t<=0)ansQ(-1)}
 if(state=='count'){cd=(room.startAt+3500-sNow())/1000;const n=Math.ceil(cd);$('msg').textContent=n>0?n:'GO!';if(cd<=0){state='race';t0=performance.now()+cd*1000;setTimeout(()=>{if(state=='race')$('msg').textContent=''},800)}}
 if(state=='race')step(dt);if(state=='race'||ADMIN)updRk(dt);
 cars.forEach(c=>{if(c.remote){const f=Math.min(1,10*dt);c.x+=(c.tx-c.x)*f;c.z+=(c.tz-c.z)*f;c.h+=(c.th-c.h)*f;const nr=nearest(c.x,c.z,((c.tot%N)+N)%N,c.h);c.y+=(gy(nr.h,nr.lat)-c.y)*Math.min(1,12*dt);c.sl=nr.sl}c.pt+=(Math.atan(c.sl)-c.pt)*Math.min(1,8*dt);c.m.position.set(c.x,c.y,c.z);c.m.rotation.y=c.h+c.sa;c.m.rotation.x=-c.pt;const s=c.m.userData.sp;s.visible=!!c.dr||c.boost>0;c.m.userData.shm.visible=c.sh>0;s.material.color.setHex(c.dr?(c.ch>2?0xff44ff:c.ch>1?0xff9900:0x44aaff):0xffee00)});
-{const wl=!!me&&me.tot>=2*N;if(wl!==wallOn){wallOn=wl;boxes.forEach(b=>{b.m.scale.x=wl?2.5:1;b.m.visible=b.t<=0&&(!b.ex||wl)})}}
+{const wl=!!me&&me.tot>=2*N,s2=!!me&&me.tot>=N,ln=me?Math.floor(me.tot/N):-9;if(wl!==wallOn||s2!==shOn||ln!==curLap){wallOn=wl;shOn=s2;if(ln!==curLap){curLap=ln;boxes.forEach(b=>b.t=0)}boxes.forEach(b=>{b.m.scale.x=wl?2.5:1;b.m.visible=bv(b)})}}
 boxes.forEach(b=>{b.m.rotation.y=wallOn?b.th:b.m.rotation.y+dt*2});
 if(ADMIN){spCam(dt)}else if((state!='count'&&state!='race')||!me){const a=now/3000,q=state=='menu'?{x:0,z:-700}:S[N-10];cam.position.set(q.x+Math.cos(a)*34,14,q.z+Math.sin(a)*34);cam.lookAt(q.x,1,q.z)}
 else{ca=me.h*.6+me.a*.4;const d=9+me.v*.06,tx=me.x-Math.sin(ca)*d,tz=me.z-Math.cos(ca)*d,f=Math.min(1,9*dt);
