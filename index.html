@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>역사 레이스</title>
+<title>은산 역사 레이스</title>
 <style>
 :root{--bg:#0d1b2a;--panel:#102235ee;--fg:#f6f8fb;--acc:#ffb703;--hot:#fb5607;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1b2a;--panel:#102235ee;--fg:#f6f8fb}}
@@ -47,7 +47,7 @@ input{width:100%;box-sizing:border-box;padding:10px;border-radius:10px;border:2p
 <button class="tb" id="bd" data-k="bd">드리프트</button><button class="tb" id="bi" data-k="use">아이템</button>
 <div class="p" id="menu"><div>
 <h1>역사 레이스</h1>
-<p>3바퀴 · 최대 24명 실시간 레이스<br>2바퀴는 랜덤 퀴즈, 3바퀴부터는 상자가 길을 꽉 막아 피할 수 없어요!<br>갈림길: 🟣 짧은 길(퀴즈 상자 많음·언덕) / 🟢 긴 길</p>
+<p>3바퀴 · 최대 24명 실시간 레이스<br>2바퀴는 랜덤 퀴즈, <br>3바퀴부터는 상자가 길을 꽉 막아 피할 수 없어요!<br>갈림길: 🟣 짧은 길(퀴즈 상자 많음·언덕) / 🟢 긴 길</p>
 <input id="nm" maxlength="8" value="나" aria-label="이름">
 <div class="k" id="kts"></div>
 <p id="kd"></p><div class="bp"><button class="ar" id="bdL" aria-label="이전 외형"><i></i></button><div id="bbox"><canvas id="bcv"></canvas></div><button class="ar r" id="bdR" aria-label="다음 외형"><i></i></button></div><div id="bdd"></div><div class="k" id="cls"></div><p id="jm"></p>
@@ -55,7 +55,7 @@ input{width:100%;box-sizing:border-box;padding:10px;border-radius:10px;border:2p
 <p>키보드: 방향키/WASD 이동, Space 드리프트, E 아이템<br>모바일: 자동 가속, 화면 버튼으로 조작</p>
 </div></div>
 <div class="h" id="wn" style="left:0;right:0;top:22%;text-align:center;font-size:30px;color:#ff4d4d;display:none">⚠️ 역주행 금지! 방향을 바꿔 주세요</div>
-<div id="sb" style="display:none;position:fixed;left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 14px);justify-content:center;align-items:center;gap:8px;z-index:5">
+<div id="sb" style="display:none;position:fixed;left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 14px);justify-content:space-between;padding:0 12px;align-items:center;gap:8px;z-index:5">
 <button class="go" id="sbp" style="width:auto;padding:10px 16px;margin:0;background:#456">◀</button><b id="sbn" style="background:#000a;padding:11px 16px;border-radius:12px"></b><button class="go" id="sbx" style="width:auto;padding:10px 16px;margin:0;background:#456">▶</button><button class="go" id="sbu" style="width:auto;padding:10px 16px;margin:0">전체 보기</button></div>
 <div id="qz" style="display:none;position:fixed;left:50%;top:38%;transform:translate(-50%,-50%);width:min(92vw,420px);z-index:4;background:var(--panel);border:2px solid var(--acc);border-radius:16px;padding:14px;text-align:center;box-sizing:border-box">
 <div style="height:6px;background:#0007;border-radius:4px;overflow:hidden;margin-bottom:8px"><div id="qt" style="height:100%;background:var(--acc);width:100%"></div></div>
