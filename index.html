@@ -47,8 +47,8 @@ input{width:100%;box-sizing:border-box;padding:10px;border-radius:10px;border:2p
 <button class="tb" id="bd" data-k="bd">드리프트</button><button class="tb" id="bi" data-k="use">아이템</button>
 <div class="p" id="menu"><div>
 <h1>은산 역사 레이서</h1>
-<p>3바퀴 · 최대 24명 실시간 레이스<br>2바퀴는 랜덤 퀴즈(지름길 상자는 2바퀴부터), 3바퀴부터는 트랙 밖으로 못 나가고 상자가 길을 꽉 막아요!<br>갈림길: 🟣 짧은 길(퀴즈 상자 많음·언덕) / 🟢 긴 길</p>
-<input id="nm" maxlength="8" value="나" aria-label="이름">
+<p>3바퀴 · 최대 24명 실시간 레이스<br>2바퀴는 랜덤 퀴즈(지름길 상자는 2바퀴부터), 3바퀴부터는 트랙 밖으로 못 나가고 상자가 길을 꽉 막아요!<br>퀴즈 정답 -0.3초 / 오답 +0.3초 (최종 기록에 반영)<br>갈림길: 🟣 짧은 길(퀴즈 상자 많음·언덕) / 🟢 긴 길</p>
+<div style="display:flex;gap:10px;align-items:center;justify-content:center;margin:8px 0"><span style="font-size:20px;font-weight:900">📍 <span id="nm"></span></span><button class="ar" id="nmr" aria-label="이름 다시 뽑기" style="width:40px;height:40px;font-size:20px">🎲</button></div>
 <div class="k" id="kts"></div>
 <p id="kd"></p><div class="bp"><button class="ar" id="bdL" aria-label="이전 외형"><i></i></button><div id="bbox"><canvas id="bcv"></canvas></div><button class="ar r" id="bdR" aria-label="다음 외형"><i></i></button></div><div id="bdd"></div><div class="k" id="cls"></div><p id="jm"></p>
 <button class="go" id="st">참가하기</button>
@@ -179,14 +179,14 @@ $('bdL').onclick=()=>{bdSel=(bdSel+BDS.length-1)%BDS.length;rbd();upPv()};$('bdR
 const rc=()=>[...$('cls').children].forEach((b,i)=>b.classList.toggle('s',i==colSel));rc();window.PVOK=1;upPv();
 function slotPos(c,k){const i=N-6-(k>>1)*6,o=k%2?4:-4;c.x=S[i].x+L[i].x*o;c.z=S[i].z+L[i].z*o;c.h=c.a=Math.atan2(T[i].x,T[i].z);c.idx=i;c.tot=i-N;c.v=0}
 const slotOf=id=>Math.max(0,Object.keys(pls).sort((a,b)=>pls[a].j-pls[b].j).indexOf(id));
-function mkCar(id,p){const c={id,remote:id!=uid,ai:false,kt:KT[p.st],name:p.name,m:mk2(p.st,COLS[p.col],p.bs),x:0,z:0,h:0,a:0,v:0,idx:0,tot:-N,boost:0,spin:0,sa:0,dr:0,ch:0,item:null,off:(Math.random()-.5)*10,sh:0,qc:0,rw:0,sk:1,wait:0,fin:false,dist:0,pos:1,y:0,sl:0,pt:0,bx:null,bq:0,br:0,tx:0,tz:0,th:0};
+function mkCar(id,p){const c={id,remote:id!=uid,ai:false,kt:KT[p.st],name:p.name,m:mk2(p.st,COLS[p.col],p.bs),x:0,z:0,h:0,a:0,v:0,idx:0,tot:-N,boost:0,spin:0,sa:0,dr:0,ch:0,item:null,off:(Math.random()-.5)*10,sh:0,qc:0,rw:0,sk:1,wait:0,fin:false,dist:0,pos:1,y:0,sl:0,pt:0,adj:0,bx:null,bq:0,br:0,tx:0,tz:0,th:0};
 slotPos(c,slotOf(id));c.tx=c.x;c.tz=c.z;c.th=c.h;scene.add(c.m);cars.push(c);if(!c.remote)me=c;return c}
 function sync(){for(let i=cars.length-1;i>=0;i--)if(!pls[cars[i].id]){scene.remove(cars[i].m);if(cars[i]===me)me=null;cars.splice(i,1)}
 for(const id in pls){const p=pls[id];let c=cars.find(q=>q.id==id);if(!c)c=mkCar(id,p);if(c.remote){c.tx=p.x;c.tz=p.z;c.th=p.h;c.v=p.v;c.tot=p.tot;c.fin=!!p.fin;c.ft=p.ft;c.dr=p.dr||0;c.qc=p.q||0;c.ch=p.ch||0;c.boost=p.b?1:0;c.sh=p.s?1:0;c.name=p.name}}}
 function mkBan(k,v){const m=new THREE.Mesh(new THREE.SphereGeometry(1,8,8),bnm);m.scale.y=.6;m.position.set(v.x,gAt(v.x,v.z,-1)+.6,v.z);scene.add(m);bans.push({m,x:v.x,z:v.z,own:null,age:2,k})}
 function onPhase(){dirty=1;if(ADMIN||!uid)return;
 if(room.phase=='lobby'){doneShown=0;state='wait';$('wait').style.display='flex';$('end').style.display='none';$('wn').style.display='none';qz=null;$('qz').style.display='none';$('msg').textContent='';bans.forEach(b=>scene.remove(b.m));bans=[];rks.forEach(r=>scene.remove(r.m));rks=[];boxes.forEach(b=>{b.t=0;b.m.visible=bv(b)});
-if(me){slotPos(me,slotOf(uid));Object.assign(me,{rw:0,fin:false,ai:false,item:null,boost:0,spin:0,dr:0,ch:0,qc:0,y:0,sl:0,pt:0,bx:null});PL.child(uid).update({x:me.x,z:me.z,h:me.h,v:0,tot:me.tot,fin:0,ft:0,dr:0,q:0,ch:0,b:0})}}
+if(me){slotPos(me,slotOf(uid));Object.assign(me,{rw:0,fin:false,ai:false,item:null,boost:0,spin:0,dr:0,ch:0,qc:0,adj:0,y:0,sl:0,pt:0,bx:null});PL.child(uid).update({x:me.x,z:me.z,h:me.h,v:0,tot:me.tot,fin:0,ft:0,dr:0,q:0,ch:0,b:0})}}
 else if(room.phase=='count'){state='count';$('wait').style.display='none';if(me)slotPos(me,slotOf(uid))}}
 function drawAdmin(){const cv=$('am'),g=cv.getContext('2d'),sc=Math.min((cv.width-60)/(x1-x0),(cv.height-60)/(z1-z0)),q=(x,z)=>[30+(x-x0)*sc,cv.height-30-(z-z0)*sc];
 g.clearRect(0,0,cv.width,cv.height);g.strokeStyle='#fff5';g.lineWidth=14;g.lineJoin='round';g.beginPath();S.forEach((p,i)=>{const a=q(p.x,p.z);i?g.lineTo(a[0],a[1]):g.moveTo(a[0],a[1])});g.closePath();g.stroke();
@@ -241,14 +241,18 @@ const eat=()=>b.row.forEach(r=>{r.t=1e9;r.m.visible=false});
 if(c.bq){ask(c);eat();c.bx=null}else if(!c.item){give(c);eat();c.bx=null}}}
 if(c.bx&&(c.bx.m.position.x-c.x)**2+(c.bx.m.position.z-c.z)**2>=7)c.bx=null;
 for(let i=bans.length-1;i>=0;i--){const b=bans[i],dx=b.x-c.x,dz=b.z-c.z;if(dx*dx+dz*dz<5&&(b.own!==c||b.age>1)){if(c.sh>0)c.sh=0;else{c.spin=1.1;c.v*=.3;c.dr=0}scene.remove(b.m);bans.splice(i,1);if(b.k)BN.child(b.k).remove()}}
-if(!c.fin&&c.tot>=3*N){c.fin=true;c.ai=true;c.ft=performance.now()-t0;fin.push(c);if(c===me)end()}}
+if(!c.fin&&c.tot>=3*N){c.fin=true;c.ai=true;c.ft=performance.now()-t0+(c.adj||0);fin.push(c);if(c===me)end()}}
 bans.forEach(b=>b.age+=dt);boxes.forEach(b=>{if(b.t>0){b.t-=dt;if(b.t<=0)b.m.visible=bv(b)}});
 for(const b of cars){if(!me||b===me)continue;const a=me,dx=b.x-a.x,dz=b.z-a.z,d=Math.hypot(dx,dz);if(d<3.4&&d>.01){const p=(3.4-d)/d*.65;a.x-=dx*p;a.z-=dz*p;a.v*=Math.abs(a.v-b.v)>14?.8:.97}}}
 function end(){setTimeout(()=>{$('end').style.display='flex';rend()},900)}
+const HERBS=['부여읍','규암면','은산면','외산면','내산면','구룡면','홍산면','옥산면','남면','충화면','양화면','임천면','장암면','세도면','석성면','초촌면','부소산','낙화암','고란사','궁남지','정림사지','백마강','능산리','무량사','사비성','구드래','성흥산','대재각'];
+const rndHerb=ex=>{const l=HERBS.filter(h=>!ex.includes(h)),a=l.length?l:HERBS;return a[Math.floor(Math.random()*a.length)]};
+$('nm').textContent=rndHerb([]);$('nmr').onclick=()=>{$('nm').textContent=rndHerb([$('nm').textContent])};
 $('st').onclick=()=>{if(!PL)return;if(room.phase!='lobby'){$('jm').textContent='레이스가 진행 중이에요. 다음 판을 기다려 주세요.';return}
 if(Object.keys(pls).length>=MAXP){$('jm').textContent='정원('+MAXP+'명)이 찼어요.';return}
 uid='p'+Math.random().toString(36).slice(2,8);const r=PL.child(uid);r.onDisconnect().remove();
-r.set({name:($('nm').value.trim()||'나').slice(0,8),st:sel,bs:bdSel,col:colSel,x:0,z:0,h:0,v:0,tot:-N,fin:0,ft:0,dr:0,q:0,ch:0,b:0,j:firebase.database.ServerValue.TIMESTAMP});
+const used=Object.values(pls).map(q=>q.name);let hn=$('nm').textContent;if(used.includes(hn))hn=rndHerb(used);
+r.set({name:hn,st:sel,bs:bdSel,col:colSel,x:0,z:0,h:0,v:0,tot:-N,fin:0,ft:0,dr:0,q:0,ch:0,b:0,j:firebase.database.ServerValue.TIMESTAMP});
 if(pv)scene.remove(pv);$('menu').style.display='none';state='wait';$('wait').style.display='flex'};
 $('re').onclick=()=>$('end').style.display='none';
 if(FB.apiKey.startsWith('YOUR')){document.body.insertAdjacentHTML('beforeend','<div class="p" style="z-index:9"><div><h1>설정 필요</h1><p>파일 상단의 FB 값을 내 Firebase 프로젝트 값으로 바꿔 주세요.</p></div></div>')}
@@ -312,9 +316,9 @@ let qz=null,qi=[];
 function ask(c){if(!qi.length)qi=QB.map((_,i)=>i).sort(()=>Math.random()-.5);const q=QB[qi.pop()],ch=q.slice(1).sort(()=>Math.random()-.5);qz={a:ch.indexOf(q[1]),t:10};
 $('qq').textContent=q[0];$('qa').innerHTML='';ch.forEach((x,i)=>{const b=document.createElement('button');b.textContent=(i+1)+'. '+x;b.style.cssText='padding:11px 6px;border-radius:12px;border:2px solid #fff3;background:#0006;color:#fff;font-size:14px;font-weight:700';b.onclick=()=>ansQ(i);$('qa').appendChild(b)});$('qt').style.width='100%';$('qr').textContent='';$('qz').style.display='block'}
 function ansQ(i){if(!qz||qz.rev)return;const ok=i==qz.a,cur=qz,bs=[...$('qa').children];
-if(ok){qz=null;$('qz').style.display='none';if(me){me.qc++;give(me)}$('msg').textContent='정답! ⭕';setTimeout(()=>{if(state=='race')$('msg').textContent=''},900);return}
-cur.rev=1;$('qt').style.width='0%';bs.forEach((b,k)=>{b.disabled=true;if(k==cur.a)b.style.background='#1f9d55';else if(k==i)b.style.background='#c0392b'});
-$('qr').textContent=(i<0?'⏰ 시간 초과':'❌ 오답')+' · 정답: '+bs[cur.a].textContent.replace(/^\d+\.\s*/,'');
+if(ok){qz=null;$('qz').style.display='none';if(me){me.qc++;me.adj=(me.adj||0)-300;give(me)}$('msg').textContent='⭕ -0.3초';setTimeout(()=>{if(state=='race')$('msg').textContent=''},900);return}
+cur.rev=1;if(me)me.adj=(me.adj||0)+300;$('qt').style.width='0%';bs.forEach((b,k)=>{b.disabled=true;if(k==cur.a)b.style.background='#1f9d55';else if(k==i)b.style.background='#c0392b'});
+$('qr').textContent=(i<0?'⏰ 시간 초과':'❌ 오답')+' · 정답: '+bs[cur.a].textContent.replace(/^\d+\.\s*/,'')+' · 기록 +0.3초';
 setTimeout(()=>{if(qz===cur){qz=null;$('qz').style.display='none';$('qr').textContent=''}},1800)}
 // ---- loop
 let last=performance.now();
